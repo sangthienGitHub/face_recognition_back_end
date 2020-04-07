@@ -12,10 +12,8 @@ const image = require("./controller/image");
 const db = knex({
   client: "pg",
   connection: {
-    host: "127.0.0.1",
-    user: "postgres",
-    password: "test123",
-    database: "smartbrain",
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
   },
 });
 
@@ -23,13 +21,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
-
-client.connect();
 
 app.get("/", (req, res) => {
   res.send("it is working!");
