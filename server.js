@@ -9,12 +9,15 @@ const signin = require("./controller/signin");
 const profile = require("./controller/profile");
 const image = require("./controller/image");
 
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+
 const db = knex({
-  client: "pg",
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  },
+  client: client,
 });
 
 const app = express();
