@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const knex = require("knex");
+const { Client } = require("pg");
 
 const register = require("./controller/register");
 const signin = require("./controller/signin");
@@ -23,6 +24,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+
 app.get("/", (req, res) => {
   res.send("it is working!");
 });
@@ -40,10 +48,4 @@ app.put("/image", (req, res) => {
 
 app.post("/imageurl", (req, res) => {
   image.handleApiCall(req, res);
-});
-
-const PORT = process.env.PORT;
-
-app.listen(PORT || 3000, () => {
-  console.log(`Server is listening on part ${PORT}`);
 });
